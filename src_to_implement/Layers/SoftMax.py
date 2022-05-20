@@ -1,16 +1,20 @@
-import Base
+from src_to_implement.Layers import Base
 import numpy as np
+
 
 class SoftMax(Base.BaseLayer):
     def __init__(self):
-        super.__init__()
-        self.trainable = True
+        super(SoftMax).__init__()
+        self.trainable = False
+        self.y_prediction = None
+        self.error_tensor = None
 
     def forward(self, input_size):
-        output = np.exp(input_size)
-        y_pred = output / np.sum(output, axis=1, keepdims=True)
+        output = np.exp(input_size - np.max(input_size, axis=1, keepdims=True))
+        self.y_prediction = output / np.sum(output, axis=1, keepdims=True)
 
-        return y_pred
+        return self.y_prediction
 
-    def backward(self):
-        pass
+    def backward(self, error_tensor):
+        softmax_back = self.y_prediction-(np.sum(error_tensor*self.y_prediction, axis=1, keepdims=True))
+        return softmax_back

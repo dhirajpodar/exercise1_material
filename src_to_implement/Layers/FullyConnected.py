@@ -1,14 +1,15 @@
-import Base
+from src_to_implement.Layers import Base
 import numpy as np
 import random
 
 
 class FullyConnected(Base.BaseLayer):
     def __init__(self, input_size, output_size):
+        super.__init__()
         self.input_size = input_size
         self.output_size = output_size
         self.trainable = True
-        self.weights = np.random.rand(input_size, output_size)
+        self.weights = np.random.uniform(input_size, output_size)
         self._optimizer = None
         self.gradient_weights = None
 
