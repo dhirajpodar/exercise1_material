@@ -10,8 +10,8 @@ class SoftMax(Base.BaseLayer):
         self.error_tensor = None
 
     def forward(self, input_size):
-        output = np.exp(input_size - np.max(input_size, axis=1, keepdims=True))
-        self.y_prediction = output / np.sum(output, axis=1, keepdims=True)
+        exp_output = np.exp(input_size - np.max(input_size, axis=1, keepdims=True))
+        self.y_prediction = exp_output / np.sum(exp_output, axis=1, keepdims=True)
 
         return self.y_prediction
 
