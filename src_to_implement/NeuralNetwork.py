@@ -21,8 +21,8 @@ class NeuralNetwork:
 
     def backward(self):
         output_back = self.loss_layer.backward(self.label_tensor)
-        for back_layer in self.layers[::-1]:
-            output_back = back_layer.backward(output_back)
+        for layer in self.layers[::-1]:
+            output_back = layer.backward(output_back)
 
     def append_layer(self, layer):
         if layer.trainable:
@@ -32,12 +32,11 @@ class NeuralNetwork:
 
     def train(self, iterations):
         for _ in range(iterations):
-            running_loss = self.forward()
+            loss = self.forward()
             self.backward()
-            self.loss.append(running_loss)
+            self.loss.append(loss)
 
     def test(self, input_tensor):
-        output_layer = input_tensor
         for layer in self.layers:
-            output_layer = layer.forward(output_layer)
-        return output_layer
+            input_tensor = layer.forward(input_tensor)
+        return input_tensor
