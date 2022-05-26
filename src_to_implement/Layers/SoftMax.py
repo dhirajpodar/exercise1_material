@@ -1,8 +1,8 @@
-from src_to_implement.Layers import Base
+from Layers.Base import BaseLayer
 import numpy as np
 
 
-class SoftMax(Base.BaseLayer):
+class SoftMax(BaseLayer):
     def __init__(self):
         super(SoftMax).__init__()
         self.trainable = False
@@ -16,5 +16,5 @@ class SoftMax(Base.BaseLayer):
         return self.y_prediction
 
     def backward(self, error_tensor):
-        softmax_back = self.y_prediction-(np.sum(error_tensor*self.y_prediction, axis=1, keepdims=True))
-        return softmax_back
+        softmax_gradient = self.y_prediction * (error_tensor - np.sum(error_tensor*self.y_prediction, axis=1, keepdims=True))
+        return softmax_gradient

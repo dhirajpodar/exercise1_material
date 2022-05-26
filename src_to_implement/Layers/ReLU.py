@@ -1,8 +1,8 @@
-from src_to_implement.Layers import Base
+from Layers.Base import BaseLayer
 import numpy as np
 
 
-class ReLU(Base.BaseLayer):
+class ReLU(BaseLayer):
     def __init__(self):
         super(ReLU).__init__()
         self.trainable = False
@@ -13,5 +13,5 @@ class ReLU(Base.BaseLayer):
         return np.maximum(0, input_tensor)
 
     def backward(self, error_tensor):
-        error_tensor[self.input_tensor <= 0] = 0
+        error_tensor[self.input_tensor < 0] = 0
         return error_tensor

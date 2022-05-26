@@ -1,29 +1,33 @@
-from src_to_implement.Layers import Base
+from Layers.Base import BaseLayer
+
 import numpy as np
 
 
-class FullyConnected(Base.BaseLayer):
+class FullyConnected(BaseLayer):
     def __init__(self, input_size, output_size):
         super(FullyConnected).__init__()
         self.input_size = input_size
         self.output_size = output_size
         self.trainable = True
-        self.weights = np.random.rand(input_size, output_size)
+        self.weights = np.random.rand(input_size+1, output_size) # bias is also included in the weights
         self._optimizer = None
         self.gradient = None
         self.input_tensor = None
         self.error_tensor = None
 
     def forward(self, input_tensor):
-        self.input_tensor = input_tensor
-        output = np.dot(input_tensor, self.weights)
+        self.input_tensor = np.concatenate((input_tensor, np.ones((input_tensor.shape[0], 1))), axis=1)
+
+        output = np.dot(self.input_tensor, self.weights)
         return output
 
     def backward(self, error_tensor):
         self.error_tensor = np.dot(error_tensor, self.weights.T)
+        self.error_tensor = np.delete(self.error_tensor, -1, axis=1)
+
         self.gradient = np.dot(self.input_tensor.T, error_tensor)
-        if self._optimizer is not None:
-            self.weights = self._optimizer.calculate_update(self.weights, self.gradient)
+        if self.optimizer is not None:
+            self.weights = self.optimizer.calculate_update(self.weights, self.gradient)
         return self.error_tensor
 
     # getter method

@@ -7,8 +7,13 @@ class CrossEntropyLoss:
 
     def forward(self, prediction_tensor, label_tensor):
         self.input_tensor = prediction_tensor
-        loss = -np.sum(label_tensor * np.log(prediction_tensor))
+
+        '''epsilon the smallest representation number, increases stability for every
+        wrong predictions to prevent values close to log(0)'''
+        epsilon = np.finfo(float).eps 
+
+        loss = -np.sum(label_tensor * np.log(prediction_tensor + epsilon)) # loss calculation
         return loss
 
     def backward(self, label_tensor):
-        return -(label_tensor/self.input_tensor)
+        return -(label_tensor / self.input_tensor)

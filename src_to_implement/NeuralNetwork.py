@@ -1,10 +1,10 @@
 import numpy as np
-from src_to_implement.Optimization import Optimizers
+from Optimization.Optimizers import Sgd
 import copy
 
 
 class NeuralNetwork:
-    def __init__(self, optimizers: Optimizers):
+    def __init__(self, optimizers: Sgd):
         self.optimizers = optimizers
         self.loss = []
         self.layers = []
